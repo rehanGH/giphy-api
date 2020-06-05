@@ -55,7 +55,13 @@ export default class GifCard extends Component {
         </div>
         <ol>
           {this.state.gifs.map((gif, index) => {
-            return <li key={index}>{gif}</li>;
+            
+            return (
+            <video loop autoPlay>
+            <source src={gif} type="video/mp4" />
+             {/* <li key={index}>{gif}</li> */}
+             </video>
+            )
           })}
         </ol>
       </div>
