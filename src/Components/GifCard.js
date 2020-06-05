@@ -15,7 +15,7 @@ export default class GifCard extends Component{
       handleSearch = () => {
         const searchInput = this.state.searchInput;
         const API_KEY = process.env.REACT_APP_KEY;
-        const url = (`http://api.giphy.com/v1/gifs/search?q=${searchInput}&api_key=` + API_KEY)
+        const url = (`http://api.giphy.com/v1/gifs/search?q=${searchInput}&api_key=` + {API_KEY})
 
         axios
         .get(url)
