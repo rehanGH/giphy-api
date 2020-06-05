@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import SearchField from "./SearchField";
-import { Jumbotron } from "react-bootstrap";
 import axios from "axios";
 
 export default class GifCard extends Component {
