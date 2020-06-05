@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
+import {Button} from "react-bootstrap"
 
 const SearchField = ({ value, onChange, onSearch }) => {
     return (
       <div className="search">
         <input value={value} onChange={onChange} />
-        <button onClick={onSearch}>Search</button>
+        <Button onClick={onSearch}>Search</Button>
       </div>
     );
   };

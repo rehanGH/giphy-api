@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import SearchField from "./SearchField"
+import {Jumbotron} from "react-bootstrap"
 import axios from "axios"
 
 export default class GifCard extends Component{
@@ -15,7 +16,7 @@ export default class GifCard extends Component{
       handleSearch = () => {
         const searchInput = this.state.searchInput;
         const API_KEY = process.env.REACT_APP_KEY;
-        const url = (`http://api.giphy.com/v1/gifs/search?q=${searchInput}&api_key=` + {API_KEY})
+        const url = (`http://api.giphy.com/v1/gifs/search?q=${searchInput}&api_key=${API_KEY}`)
 
         axios
         .get(url)
@@ -47,7 +48,7 @@ export default class GifCard extends Component{
     }
         return (
             <div className="gif">
-                <h1>Giphy Searcher</h1>
+            <h1 >Giphy Searcher</h1 >
             <SearchField
               value={this.state.searchInput}
               onChange={this.handleInput}
