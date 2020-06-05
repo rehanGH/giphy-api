@@ -26,7 +26,7 @@ export default class GifCard extends Component {
         const gifs = data.map((val) => {
           console.log("val", val);
           console.log("og", val.images.original.mp4);
-          return val.images.original.mp4;
+          return val.images.fixed_width.mp4;
         });
 
         this.setState({ word: searchInput, gifs: gifs, searchInput: "" });
