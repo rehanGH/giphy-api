@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import SearchField from "./SearchField"
+import axios from "axios"
 
 export default class GifCard extends Component{
     constructor(props){
@@ -14,16 +15,21 @@ export default class GifCard extends Component{
       handleSearch = () => {
         const searchInput = this.state.searchInput;
         const API_KEY = process.env.REACT_APP_KEY;
-        const url = `http://api.giphy.com/v1/gifs/search?q=${searchInput}&api_key=`
+        const url = (`http://api.giphy.com/v1/gifs/search?q=${searchInput}&api_key=` + API_KEY)
 
         axios
-        .get((url, {params: {key: API_KEY}})
+        .get(url)
         .then((response) =>{
             const data = response.data;
-            const gifs = data[0].data;
-            this.setState({ word})
+            console.log(data);
+            const gifs = data[0].images.original;
+            this.setState({ word: searchInput, gifs, searchInput: ""})
         })
-      }
+        .catch((err) => {
+            console.log(err);
+            this.setState({ definitions: [] });
+          });
+      };
 
 
     render(){
@@ -47,8 +53,6 @@ export default class GifCard extends Component{
               onChange={this.handleInput}
               onSearch={this.handleSearch}
             />
-            <img
-            src={this.state.gif.imageUrl} />
             <h3>{this.state.word}</h3>
             {gifList}
           </div>
