@@ -126,7 +126,7 @@ export default class GifCard extends Component {
     return (
       <div>
         <div className="gif">
-          <h1>Giphy Searcher</h1>
+          <h1 className="header">Giphy Searcher</h1>
           {
             <SearchField
               value={this.state.searchInput}

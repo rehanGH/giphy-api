@@ -1,14 +1,15 @@
 import React from "react";
-import {Button} from "react-bootstrap"
 
 const SearchField = ({ value, onChange, onSearch, onRandom }) => {
     return (
       <div className="search">
-        Enter Anything: <input placeholder="cat" value={value} onChange={onChange} />
-        <Button onClick={onSearch}>Search</Button>
-        <Button onClick={onRandom}>Random</Button>
+        <h5>Enter Anything:</h5> 
+        <input className="main-input" placeholder="cat" value={value} onChange={onChange} />
+        <button className="button" onClick={onSearch}>Search</button>
+        <button className="button" onClick={onRandom}>Random</button>
       </div>
     );
   };
 
 export default SearchField
+

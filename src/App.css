@@ -38,5 +38,49 @@
 }
 
 body{
-  background-color: black;
+  background-color: #262626;
 }
+
+.header{
+  margin-top: 0;
+  padding: 60px;
+  text-align: center;
+  background: #473a64;
+  color: rgba(255, 255, 255, 0.842);
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.button {
+  display: inline-block;
+  padding: 12px 16;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+
+.button:hover {background-color: #3e8e41}
+
+.button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translate4px;
+}
+
+.main-input{
+  padding-bottom: 5px;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.search{
+  color: black;
+}
+
