@@ -2,11 +2,30 @@ import React, { Component } from "react";
 import SearchField from "./SearchField";
 import axios from "axios";
 
+const API_KEY = process.env.REACT_APP_KEY;
+const trendUrl = `http://api.giphy.com/v1/gifs/trending?api_key=${API_KEY}`;
+const randomUrl = `http://api.giphy.com/v1/gifs/random?api_key=${API_KEY}`;
+
 export default class GifCard extends Component {
   constructor(props) {
     super(props);
     this.state = { searchInput: "", gifs: [], word: "" };
   }
+
+  componentDidMount(){
+      axios.get(trendUrl)
+      .then((response) => {
+          const {data} = response.data;
+            const gifs = data.map((val) => {
+                return val.images.original.mp4;
+              });
+
+        this.setState({gifs: gifs});
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
   handleInput = (event) => {
     this.setState({ searchInput: event.target.value });
@@ -14,17 +33,13 @@ export default class GifCard extends Component {
 
   handleSearch = () => {
     const searchInput = this.state.searchInput;
-    const API_KEY = process.env.REACT_APP_KEY;
-    const url = `http://api.giphy.com/v1/gifs/search?q=${searchInput}&api_key=${API_KEY}`;
-
+    const regularUrl = `http://api.giphy.com/v1/gifs/search?q=${searchInput}&api_key=${API_KEY}`;
     axios
-      .get(url)
+      .get(regularUrl)
       .then((response) => {
         const { data } = response.data;
         console.log(data);
         const gifs = data.map((val) => {
-          console.log("val", val);
-          console.log("og", val.images.original.mp4);
           return val.images.original.mp4;
         });
 
@@ -32,15 +47,24 @@ export default class GifCard extends Component {
       })
       .catch((err) => {
         console.log(err);
-        // this.setState({ definitions: [] });
       });
   };
 
+  handleRandom = () => {
+    axios
+    .get(randomUrl)
+    .then((response) => {
+        const {data} = response.data;
+        this.setState({result: data.images.original.mp4});
+        console.log(data);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+};
+
+
   render() {
-    // let gifList;
-    // if (this.state.gifs.length === 0) {
-    //   return <></>;
-    // } else {
     return (
       <div>
         <div className="gif">
@@ -49,17 +73,15 @@ export default class GifCard extends Component {
             value={this.state.searchInput}
             onChange={this.handleInput}
             onSearch={this.handleSearch}
+            onRandom={this.handleRandom}
           />
           <h3>{this.state.word}</h3>
-          {/* {gifList} */}
         </div>
         <ol>
           {this.state.gifs.map((gif, index) => {
-            
             return (
             <video loop autoPlay>
             <source src={gif} type="video/mp4" />
-             {/* <li key={index}>{gif}</li> */}
              </video>
             )
           })}
