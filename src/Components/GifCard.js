@@ -2,9 +2,13 @@ import React, { Component } from "react";
 import SearchField from "./SearchField";
 // import Trending from "./Trending";
 // import { Jumbotron } from "react-bootstrap";
+
 import axios from "axios";
 
-const API_KEY = process.env.REACT_APP_KEY;
+import Gif from "./gif";
+import Gifs from "./gifs";
+
+const API_KEY = "fQNPzeLzerClCIKPpsWdDc2HeRpuOD4e"
 const trendingURL = `http://api.giphy.com/v1/gifs/trending?api_key=${API_KEY}`;
 const randomURL = `http://api.giphy.com/v1/gifs/random?api_key=${API_KEY}`;
 
@@ -12,74 +16,64 @@ export default class GifCard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      trending: true,
-      // ranState: false,
+      display: "",
       random: "",
       searchInput: "",
       gifs: [],
+      search: [],
       word: "",
     };
   }
 
   componentDidMount() {
+    console.log("in comp did mount")
     axios
     .get(trendingURL)
     .then((response) => {
       const { data } = response.data;
-      console.log(data);
       const gifs = data.map((val) => {
         return val.images.fixed_width.mp4;
       });
       this.setState({
         gifs: gifs,
-        trending: true,
       });
     })
     .catch((err) => {
       console.log(err);
     });
   }
-
-  componentDidMount(){
-      axios.get(trendUrl)
-      .then((response) => {
-          const {data} = response.data;
-            const gifs = data.map((val) => {
-                return val.images.original.mp4;
-              });
-
-        this.setState({gifs: gifs});
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
 
   handleInput = (event) => {
     this.setState({ searchInput: event.target.value });
   };
 
   handleSearch = () => {
+    this.setState({
+      random: "",
+      display: "search"
+    })
     const searchInput = this.state.searchInput;
     const url = `http://api.giphy.com/v1/gifs/search?q=${searchInput}&api_key=${API_KEY}`;
-    // this.setState({
-    //   trending: true,
-    // });
-    // this.helper(url);
     axios
       .get(url)
       .then((response) => {
-        console.log(url);
+        // console.log(url);
         const { data } = response.data;
+
         const gifs = data.map((val) => {
           return val.images.fixed_width.mp4;
         });
-        this.setState({
+        // console.log(gifs)
+                this.setState({
           word: searchInput,
-          gifs: gifs,
+          search: [...gifs],
+          gifs:[],
+          // random: "",
           searchInput: "",
-          trending: true,
+          // display: "search",
+          searched: gifs[0]
         });
+
       })
       .catch((err) => {
        console.log(err);
@@ -87,10 +81,6 @@ export default class GifCard extends Component {
   };
 
   handleRandom = () => {
-    // this.setState({
-    //   ranState: true,
-    //   trending: false,
-    // });
     axios
       .get(randomURL)
       .then((response) => {
@@ -98,8 +88,8 @@ export default class GifCard extends Component {
         console.log(data);
         this.setState({
           random: data.images.fixed_width.mp4,
-          ranState: true,
-          trending: false,
+          // ranState: true,
+          display: "random",
           gifs: [],
         });
         console.log(this.state.random);
@@ -112,7 +102,7 @@ export default class GifCard extends Component {
   helper = (url) => {
     const searchInput = this.state.searchInput;
     axios
-      .get(regularUrl)
+      .get(url)
       .then((response) => {
         const { data } = response.data;
         console.log(data);
@@ -131,44 +121,8 @@ export default class GifCard extends Component {
       });
   };
 
-  handleRandom = () => {
-    axios
-    .get(randomUrl)
-    .then((response) => {
-        const {data} = response.data;
-        this.setState({result: data.images.original.mp4});
-        console.log(data);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-};
-
-
   render() {
-    // let gifList;
-    // if (this.state.gifs.length === 0) {
-    //   return <></>;
-    // } else {
-    // if (!this.state.trending) {
-    //   return (
-    //     <div>
-    //       <div className="gif">
-    //         <h1>Giphy Searcher</h1>
-    //         {
-    //           <SearchField
-    //             value={this.state.searchInput}
-    //             onChange={this.handleInput}
-    //             onSearch={this.handleSearch}
-    //             onRandom={this.handleRandom}
-    //           />
-    //         }
-    //         <h3>{this.state.word}</h3>
-    //       </div>
-    //     </div>
-    //   );
-    // }
-    
+
     return (
       <div>
         <div className="gif">
@@ -177,32 +131,20 @@ export default class GifCard extends Component {
             <SearchField
               value={this.state.searchInput}
               onChange={this.handleInput}
-              onSearch={this.handleSearch}
+              async onSearch={this.handleSearch}
               onRandom={this.handleRandom}
             />
           }
           <h3>{this.state.word}</h3>
         </div>
-        {this.state.trending ? (
-          <ol>
-            {this.state.gifs.map((gif) => {
-              return (
-                <video loop autoPlay>
-                  <source src={gif} type="video/mp4" />
-                </video>
-              );
-            })}
-          </ol>
-        ) : (
-          <video loop autoPlay>
-            <source src={this.state.random} type="video/mp4" />
-          </video>
-        )}
+
+
+        {
+          this.state.display === "random"? <Gif gif = {this.state.random}/>: <Gifs values={{trending:this.state.gifs, display: this.state.display, search:this.state.search}} />
+        }
       </div>
     );
   }
 }
 
-{
-  /* <img loop autoPlay></img> */
-}
+
